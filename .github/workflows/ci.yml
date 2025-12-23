@@ -1,4 +1,4 @@
-name: CI Demo
+name: Advanced CI
 
 on:
   push:
@@ -9,17 +9,30 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11"]
+
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Setup Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: ${{ matrix.python-version }}
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: pip-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('requirements.txt') }}
 
       - name: Run setup
         run: ./ci/setup.sh
 
-      - name: Run tests
+      - name: Lint
+        run: ./ci/lint.sh
+
+      - name: Test
         run: ./ci/test.sh

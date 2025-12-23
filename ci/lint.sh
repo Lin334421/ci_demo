@@ -1,2 +1,7 @@
 #!/usr/bin/env bash
-echo "lint step (placeholder)"
+set -e
+
+source .venv/bin/activate
+
+pip install flake8
+flake8 hello.py
