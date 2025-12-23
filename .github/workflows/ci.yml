@@ -36,3 +36,38 @@ jobs:
 
       - name: Test
         run: ./ci/test.sh
+
+      - name: Static analysis (flake8)
+        run: |
+          flake8 .
+
+      - name: Run tests with coverage
+        run: |
+          coverage run -m pytest
+          coverage report
+          coverage xml
+
+      - name: Enforce coverage threshold
+        run: |
+          coverage report --fail-under=80
+
+
+
+      - name: Generate SBOM
+        uses: anchore/syft-action@v0
+        with:
+          path: .
+          format: spdx-json
+          output: sbom.json
+
+      - name: Upload SBOM
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: sbom.json
+
+      - name: Vulnerability scan
+        uses: anchore/grype-action@v0
+        with:
+          sbom: sbom.json
+          fail-build: true
