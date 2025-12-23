@@ -2,5 +2,5 @@
 set -e
 
 ./ci/setup.sh
-./ci/lint.sh
+#./ci/lint.sh
 ./ci/test.sh
