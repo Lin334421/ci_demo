@@ -2,5 +2,5 @@
 set -e
 
 source .venv/bin/activate
-
+pip install flake8
 flake8 .

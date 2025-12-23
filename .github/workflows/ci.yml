@@ -31,15 +31,15 @@ jobs:
       - name: Run setup
         run: ./ci/setup.sh
 
-#      - name: Lint
-#        run: ./ci/lint.sh
+      - name: Lint
+        run: ./ci/lint.sh
 
       - name: Test
         run: ./ci/test.sh
 
-      - name: Static analysis (flake8)
-        run: |
-          flake8 .
+#      - name: Static analysis (flake8)
+#        run: |
+#          flake8 .
 
       - name: Run tests with coverage
         run: |
